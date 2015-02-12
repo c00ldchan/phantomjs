@@ -44,6 +44,7 @@ class Config: public QObject
     Q_PROPERTY(QString cookiesFile READ cookiesFile WRITE setCookiesFile)
     Q_PROPERTY(bool diskCacheEnabled READ diskCacheEnabled WRITE setDiskCacheEnabled)
     Q_PROPERTY(int maxDiskCacheSize READ maxDiskCacheSize WRITE setMaxDiskCacheSize)
+    Q_PROPERTY(QString diskCacheDir READ diskCacheDir WRITE setDiskCacheDir)
     Q_PROPERTY(bool ignoreSslErrors READ ignoreSslErrors WRITE setIgnoreSslErrors)
     Q_PROPERTY(bool localUrlAccessEnabled READ localUrlAccessEnabled WRITE setLocalUrlAccessEnabled)
     Q_PROPERTY(bool localToRemoteUrlAccessEnabled READ localToRemoteUrlAccessEnabled WRITE setLocalToRemoteUrlAccessEnabled)
@@ -92,6 +93,9 @@ public:
 
     int maxDiskCacheSize() const;
     void setMaxDiskCacheSize(int maxDiskCacheSize);
+
+    QString diskCacheDir() const;
+    void setDiskCacheDir(const QString &value);
 
     bool ignoreSslErrors() const;
     void setIgnoreSslErrors(const bool value);
@@ -204,6 +208,7 @@ private:
     int m_offlineStorageDefaultQuota;
     bool m_diskCacheEnabled;
     int m_maxDiskCacheSize;
+    QString m_diskCacheDir;
     bool m_ignoreSslErrors;
     bool m_localUrlAccessEnabled;
     bool m_localToRemoteUrlAccessEnabled;

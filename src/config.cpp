@@ -52,6 +52,7 @@ static const struct QCommandLineConfigEntry flags[] =
     { QCommandLine::Option, '\0', "config", "Specifies JSON-formatted configuration file", QCommandLine::Optional },
     { QCommandLine::Option, '\0', "debug", "Prints additional warning and debug message: 'true' or 'false' (default)", QCommandLine::Optional },
     { QCommandLine::Option, '\0', "disk-cache", "Enables disk cache: 'true' or 'false' (default)", QCommandLine::Optional },
+    { QCommandLine::Option, '\0', "disk-cache-dir", "Sets disk cache directory", QCommandLine::Optional },
     { QCommandLine::Option, '\0', "ignore-ssl-errors", "Ignores SSL errors (expired/self-signed certificate errors): 'true' or 'false' (default)", QCommandLine::Optional },
     { QCommandLine::Option, '\0', "load-images", "Loads all inlined images: 'true' (default) or 'false'", QCommandLine::Optional },
     { QCommandLine::Option, '\0', "local-storage-path", "Specifies the location for offline local storage", QCommandLine::Optional },
@@ -238,6 +239,16 @@ int Config::maxDiskCacheSize() const
 void Config::setMaxDiskCacheSize(int maxDiskCacheSize)
 {
     m_maxDiskCacheSize = maxDiskCacheSize;
+}
+
+QString Config::diskCacheDir() const
+{
+    return m_diskCacheDir;
+}
+
+void Config::setDiskCacheDir(const QString &value)
+{
+    m_diskCacheDir = value;
 }
 
 bool Config::ignoreSslErrors() const
@@ -544,6 +555,7 @@ void Config::resetToDefaults()
     m_offlineStoragePath = QString();
     m_offlineStorageDefaultQuota = -1;
     m_diskCacheEnabled = false;
+    m_diskCacheDir = QString();
     m_maxDiskCacheSize = -1;
     m_ignoreSslErrors = false;
     m_localUrlAccessEnabled = true;
@@ -681,6 +693,10 @@ void Config::handleOption(const QString &option, const QVariant &value)
 
     if (option == "disk-cache") {
         setDiskCacheEnabled(boolValue);
+    }
+
+    if (option == "disk-cache-dir") {
+        setDiskCacheDir(value.toString());
     }
 
     if (option == "ignore-ssl-errors") {

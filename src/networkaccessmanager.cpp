@@ -31,6 +31,8 @@
 #include <QAuthenticator>
 #include <QDateTime>
 #include <QDesktopServices>
+#include <QDir>
+#include <QFile>
 #include <QNetworkDiskCache>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -163,7 +165,19 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent, const Config *config
 {
     if (config->diskCacheEnabled()) {
         m_networkDiskCache = new QNetworkDiskCache(this);
-        m_networkDiskCache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+        if(config->diskCacheDir() != "")
+        {
+            QDir cacheDir(config->diskCacheDir());
+            if(!cacheDir.exists())
+            {
+                cacheDir.mkpath(".");
+            }
+            m_networkDiskCache->setCacheDirectory(config->diskCacheDir());
+        }
+        else
+        {
+            m_networkDiskCache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+        }
         if (config->maxDiskCacheSize() >= 0)
             m_networkDiskCache->setMaximumCacheSize(qint64(config->maxDiskCacheSize()) * 1024);
         setCache(m_networkDiskCache);
